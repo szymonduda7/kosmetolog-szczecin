@@ -63,6 +63,22 @@
     }
   }
 
+  // Pełny ekran: cały kadr zamiast przycięcia z karty (zabezpieczenie dla Firefoksa)
+  function onFullscreen() {
+    const fs = document.fullscreenElement || document.webkitFullscreenElement;
+    document.querySelectorAll('video').forEach((v) => {
+      if (v === fs) {
+        v.style.setProperty('object-fit', 'contain', 'important');
+        v.style.setProperty('object-position', 'center', 'important');
+      } else {
+        v.style.removeProperty('object-fit');
+        v.style.removeProperty('object-position');
+      }
+    });
+  }
+  document.addEventListener('fullscreenchange', onFullscreen);
+  document.addEventListener('webkitfullscreenchange', onFullscreen);
+
   // Filtry galerii
   const chips = document.querySelectorAll('[data-filter]');
   const tiles = document.querySelectorAll('#galeria .tile');

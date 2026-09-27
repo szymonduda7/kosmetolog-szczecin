@@ -720,6 +720,24 @@ video:focus-visible {
   object-fit: cover;
 }
 
+/* Pełny ekran: pokaż cały kadr zamiast przycięcia z karty */
+/* Osobne reguły: nieznany selektor w liście unieważnia całą regułę (Firefox) */
+video:fullscreen {
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #000;
+}
+video:-moz-full-screen {
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #000;
+}
+video:-webkit-full-screen {
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #000;
+}
+
 .media-thumbs {
   column-count: 2;
   column-gap: 0.75rem;
