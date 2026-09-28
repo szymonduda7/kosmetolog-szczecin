@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kosmetolog/Laser Szczecin | Wersja testowa</title>
+<meta name="description" content="Depilacja laserowa i kosmetologia w Szczecinie, ul. 3 Maja 9. Wersja testowa strony głównej.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<link rel="stylesheet" href="styles.css">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          jet: '#111111',
+          snow: '#ffffff',
+          smoke: '#f5f5f5',
+          ash: '#e5e5e5',
+          steel: '#707072',
+        },
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+<style>
+  /* Wersja testowa: estetyka sportowej kampanii. Nadpisuje tokeny ze styles.css. */
+  :root {
+    --jet: #111111;
+    --smoke: #f5f5f5;
+    --ash: #e5e5e5;
+    --steel: #707072;
+  }
+  body {
+    background: #fff;
+    color: var(--jet);
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .shout {
+    font-family: "Anton", "Inter", sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    line-height: 0.98;
+    padding-top: 0.06em;
+  }
+  .shout-xl { font-size: clamp(3.4rem, 11vw, 10.5rem); }
+  .shout-lg { font-size: clamp(2.6rem, 6.5vw, 5.5rem); }
+  .shout-md { font-size: clamp(1.7rem, 3vw, 2.5rem); line-height: 1.12; }
+
+  a:focus-visible, button:focus-visible, summary:focus-visible, video:focus-visible {
+    outline: 2px solid var(--jet);
+    outline-offset: 3px;
+  }
+  .on-dark a:focus-visible, .on-dark button:focus-visible { outline-color: #fff; }
+
+  /* Pasek górny i nagłówek */
+  .util-bar { background: var(--smoke); font-size: 0.78rem; }
+  .n-header { background: #fff; }
+  .n-header::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    border-bottom: 1px solid var(--ash); opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .n-header.is-scrolled::after { opacity: 1; }
+  .n-brand { font-weight: 600; letter-spacing: -0.02em; }
+  .n-nav a { position: relative; font-weight: 500; }
+  .n-nav a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px;
+    background: var(--jet); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s var(--ease-spring);
+  }
+  .n-nav a:hover::after { transform: scaleX(1); }
+  .n-nav a:active { opacity: 0.6; }
+
+  /* Przyciski-pigułki */
+  .pill {
+    position: relative; isolation: isolate; overflow: hidden;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    border-radius: 999px; font-weight: 500; line-height: 1.2; white-space: nowrap;
+    padding: 0.8rem 1.4rem;
+    transition: transform 0.3s var(--ease-spring);
+  }
+  .pill::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .pill:hover::before { opacity: 1; }
+  .pill:active { transform: scale(0.97); }
+  .pill-dark { background: var(--jet); color: #fff; }
+  .pill-dark::before { background: #3a3a3a; }
+  .pill-light { background: #fff; color: var(--jet); }
+  .pill-light::before { background: var(--ash); }
+  .pill-line { color: var(--jet); box-shadow: inset 0 0 0 1.5px #cacacb; }
+  .pill-line::before { background: var(--smoke); }
+  .pill-line-light { color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.45); }
+  .pill-line-light::before { background: rgba(255,255,255,0.12); }
+
+  .round-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 3rem; height: 3rem; border-radius: 999px; background: var(--smoke);
+    transition: transform 0.3s var(--ease-spring);
+  }
+  .round-btn:hover { background: var(--ash); }
+  .round-btn:active { transform: scale(0.92); }
+  .round-btn:disabled { opacity: 0.35; cursor: default; }
+
+  /* Obrazy */
+  .shot { position: relative; overflow: hidden; background: var(--smoke); }
+  .shot img, .shot video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .shot img { transition: transform 0.9s var(--ease-spring); }
+  a.shot:hover img, .card:hover .shot img { transform: scale(1.04); }
+
+  /* Karty zabiegów jak karty produktów */
+  .rail { scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .rail::-webkit-scrollbar { display: none; }
+  .card { scroll-snap-align: start; flex: none; }
+  .card:active { opacity: 0.8; }
+
+  /* Galeria i lightbox ze styles.css w monochromie */
+  .tile { background: var(--smoke); border-radius: 0; box-shadow: none; }
+  .tile-badge { border-radius: 999px; background: #fff; color: var(--jet); }
+  .chip { border-color: #cacacb; color: var(--jet); }
+  .chip:hover { border-color: var(--jet); }
+  .chip[aria-pressed="true"] { background: var(--jet); border-color: var(--jet); color: #fff; }
+  .lightbox { background: rgba(17, 17, 17, 0.96); }
+  .stars { color: var(--jet); }
+  .on-dark .stars { color: #fff; }
+</style>
+</head>
+<body>
+
+<!-- ============ PASEK GÓRNY ============ -->
+<div class="util-bar">
+  <div class="max-w-[1440px] mx-auto px-5 md:px-12 h-9 flex items-center justify-between gap-4">
+    <span class="text-steel truncate">ul. 3 Maja 9, Szczecin · pon.-pt. 10:00-20:00 · sob. 10:00-15:30</span>
+    <a href="tel:+48787017566" class="font-medium hover:text-steel whitespace-nowrap">787 017 566</a>
+  </div>
+</div>
+
+<!-- ============ NAGŁÓWEK ============ -->
+<header id="site-header" class="n-header sticky top-0 z-50">
+  <div class="max-w-[1440px] mx-auto px-5 md:px-12 h-16 flex items-center justify-between gap-6">
+    <a href="index2.html" class="n-brand text-lg md:text-xl hover:opacity-70 active:opacity-50">Kosmetolog/Laser Szczecin</a>
+    <nav class="n-nav hidden lg:flex items-center gap-8" aria-label="Główna nawigacja">
+      <a href="uslugi.html">Zabiegi</a>
+      <a href="uslugi.html#depilacja-laserowa">Depilacja</a>
+      <a href="#efekty">Efekty</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="https://booksy.com/pl-pl/201522_kosmetolog-laser-szczecin_salon-kosmetyczny_18078_szczecin" target="_blank" rel="noopener" class="pill pill-dark hidden sm:inline-flex !py-2.5 text-sm">Umów wizytę</a>
+      <button id="menu-toggle" type="button" class="round-btn lg:hidden" aria-expanded="false" aria-controls="menu-panel" aria-label="Otwórz menu">
+        <i data-lucide="menu" data-icon="open" class="w-5 h-5"></i>
+        <i data-lucide="x" data-icon="close" class="w-5 h-5 hidden"></i>
+      </button>
+    </div>
+  </div>
+  <div id="menu-panel" class="menu-panel lg:hidden absolute inset-x-0 top-full bg-white border-b border-ash px-5 pb-8">
+    <nav aria-label="Menu mobilne">
+      <a href="uslugi.html" class="block py-3 shout text-4xl">Zabiegi</a>
+      <a href="uslugi.html#depilacja-laserowa" class="block py-3 shout text-4xl">Depilacja</a>
+      <a href="#efekty" class="block py-3 shout text-4xl">Efekty</a>
+      <a href="#galeria" class="block py-3 shout text-4xl">Galeria</a>
+      <a href="#kontakt" class="block py-3 shout text-4xl">Kontakt</a>
+      <div class="mt-6 grid gap-3">
+        <a href="https://booksy.com/pl-pl/201522_kosmetolog-laser-szczecin_salon-kosmetyczny_18078_szczecin" target="_blank" rel="noopener" class="pill pill-dark w-full">Umów wizytę</a>
+        <a href="tel:+48787017566" class="pill pill-line w-full"><i data-lucide="phone" class="w-4 h-4"></i>787 017 566</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="max-w-[1440px] mx-auto md:px-12">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2">
+    <div class="shot h-[70svh] md:h-[82svh] rise rise-1">
+      <img src="images/14.webp" alt="Natalia wykonuje depilację laserową twarzy" width="1193" height="1800" class="object-[50%_28%]">
+    </div>
+    <div class="shot hidden md:block h-[82svh] rise rise-2">
+      <img src="images/9.webp" alt="Klientka z maską alginatową na twarzy i dekolcie" width="1013" height="1800" class="object-[50%_40%]">
+    </div>
+  </div>
+  <div class="px-5 md:px-0 pt-10 md:pt-14 pb-20 md:pb-28 text-center">
+    <h1 class="shout shout-xl rise rise-2">Twoja skóra.<br>Twój czas.</h1>
+    <p class="mt-6 text-lg max-w-xl mx-auto rise rise-3">Depilacja laserowa i kosmetologia w kameralnym gabinecie Natalii przy ul. 3 Maja 9 w Szczecinie. Bez pośpiechu, z efektem.</p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3 rise rise-4">
+      <a href="https://booksy.com/pl-pl/201522_kosmetolog-laser-szczecin_salon-kosmetyczny_18078_szczecin" target="_blank" rel="noopener" class="pill pill-dark">Umów wizytę</a>
+      <a href="uslugi.html" class="pill pill-line">Zobacz cennik</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WYRÓŻNIONE ============ -->
+<section class="max-w-[1440px] mx-auto px-5 md:px-12 pb-20 md:pb-28">
+  <h2 class="text-2xl font-medium mb-6 reveal">Na początek</h2>
+  <div class="grid md:grid-cols-3 gap-2 reveal">
+    <a href="uslugi.html#depilacja-laserowa" class="shot group aspect-[4/5]">
+      <img src="images/6.webp" alt="Głowica lasera do depilacji" width="845" height="845" loading="lazy">
+      <span class="absolute left-6 bottom-6 pill pill-light">Depilacja laserowa</span>
+    </a>
+    <a href="#efekty" class="shot group aspect-[4/5]">
+      <img src="images/13.webp" alt="Skóra przed zabiegiem i tuż po nim" width="1800" height="1800" loading="lazy">
+      <span class="absolute left-6 bottom-6 pill pill-light">Efekty przed i po</span>
+    </a>
+    <a href="#gabinet" class="shot group aspect-[4/5]">
+      <img src="images/8.webp" alt="Gabinet przy ul. 3 Maja 9" width="720" height="720" loading="lazy">
+      <span class="absolute left-6 bottom-6 pill pill-light">Gabinet</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============ ZABIEGI: RZĄD KART ============ -->
+<section class="pb-20 md:pb-28">
+  <div class="max-w-[1440px] mx-auto px-5 md:px-12 flex items-end justify-between gap-6 mb-6 reveal">
+    <h2 class="text-2xl font-medium">Najczęściej wybierane</h2>
+    <div class="flex items-center gap-3">
+      <a href="uslugi.html" class="hidden sm:inline font-medium underline underline-offset-4 hover:text-steel">Wszystkie zabiegi</a>
+      <button type="button" class="round-btn" data-rail="prev" aria-label="Przewiń w lewo"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+      <button type="button" class="round-btn" data-rail="next" aria-label="Przewiń w prawo"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+    </div>
+  </div>
+  <div id="rail" class="rail flex gap-3 overflow-x-auto px-5 md:px-12 max-w-[1440px] mx-auto reveal">
+    <a href="uslugi.html#depilacja-laserowa" class="card w-[72%] sm:w-[40%] lg:w-[calc((100%-2.25rem)/4)]">
+      <div class="shot aspect-square"><img src="images/3.webp" alt="Depilacja laserowa rąk" width="921" height="921" loading="lazy"></div>
+      <h3 class="mt-3 font-medium">Depilacja laserowa</h3>
+      <p class="text-steel">Twarz, ciało, pakiety</p>
+      <p class="mt-1 font-medium">od 50 zł</p>
+    </a>
+    <a href="uslugi.html#depilacja-laserowa" class="card w-[72%] sm:w-[40%] lg:w-[calc((100%-2.25rem)/4)]">
+      <div class="shot aspect-square"><img src="images/16.webp" alt="Depilacja laserowa pach" width="921" height="1800" loading="lazy" class="object-[50%_60%]"></div>
+      <h3 class="mt-3 font-medium">Depilacja pach</h3>
+      <p class="text-steel">Depilacja laserowa · 30 min</p>
+      <p class="mt-1 font-medium">150 zł</p>
+    </a>
+    <a href="uslugi.html#oczyszczanie" class="card w-[72%] sm:w-[40%] lg:w-[calc((100%-2.25rem)/4)]">
+      <div class="shot aspect-square"><img src="images/4.webp" alt="Aplikacja preparatu na skórę twarzy" width="849" height="849" loading="lazy"></div>
+      <h3 class="mt-3 font-medium">Kombinowane oczyszczanie twarzy</h3>
+      <p class="text-steel">Oczyszczanie · 1 h 35 min</p>
+      <p class="mt-1 font-medium">250 zł</p>
+    </a>
+    <a href="uslugi.html#masaz-twarzy" class="card w-[72%] sm:w-[40%] lg:w-[calc((100%-2.25rem)/4)]">
+      <div class="shot aspect-square"><img src="images/9.webp" alt="Maska alginatowa" width="1013" height="1800" loading="lazy" class="object-[50%_40%]"></div>
+      <h3 class="mt-3 font-medium">Masaż liftingujący twarzy</h3>
+      <p class="text-steel">Masaż i rytuały · 1 h</p>
+      <p class="mt-1 font-medium">190 zł</p>
+    </a>
+    <a href="uslugi.html#mezoterapia" class="card w-[72%] sm:w-[40%] lg:w-[calc((100%-2.25rem)/4)]">
+      <div class="shot aspect-square"><img src="images/poster-2.webp" alt="Mezoterapia mikroigłowa dermapenem" width="360" height="640" loading="lazy" class="object-[50%_60%]"></div>
+      <h3 class="mt-3 font-medium">Mezoterapia mikroigłowa</h3>
+      <p class="text-steel">Dermapen · 1 h 15 min</p>
+      <p class="mt-1 font-medium">od 300 zł</p>
+    </a>
+    <a href="uslugi.html#oczyszczanie" class="card w-[72%] sm:w-[40%] lg:w-[calc((100%-2.25rem)/4)]">
+      <div class="shot aspect-square"><img src="images/11.webp" alt="Wyrównanie kolorytu, przed i po" width="939" height="1676" loading="lazy"></div>
+      <h3 class="mt-3 font-medium">Peeling PRX-T33, Yellow peel</h3>
+      <p class="text-steel">Peelingi · 30 min</p>
+      <p class="mt-1 font-medium">250 zł</p>
+    </a>
+    <a href="uslugi.html#odmladzanie" class="card w-[72%] sm:w-[40%] lg:w-[calc((100%-2.25rem)/4)]">
+      <div class="shot aspect-square"><img src="images/5.webp" alt="Zabieg aparaturowy twarzy" width="839" height="839" loading="lazy"></div>
+      <h3 class="mt-3 font-medium">Mikroprądy</h3>
+      <p class="text-steel">Odmładzanie · 1 h</p>
+      <p class="mt-1 font-medium">200 zł</p>
+    </a>
+    <a href="uslugi.html#odmladzanie" class="card w-[72%] sm:w-[40%] lg:w-[calc((100%-2.25rem)/4)]">
+      <div class="shot aspect-square"><img src="images/7.webp" alt="Głowica aparatu na czole klientki" width="855" height="855" loading="lazy"></div>
+      <h3 class="mt-3 font-medium">Karboksyterapia</h3>
+      <p class="text-steel">Odmładzanie · 1 h</p>
+      <p class="mt-1 font-medium">180 zł</p>
+    </a>
+    <a href="uslugi.html#depilacja-laserowa" class="card w-[72%] sm:w-[40%] lg:w-[calc((100%-2.25rem)/4)] pr-5 md:pr-0">
+      <div class="shot aspect-square"><img src="images/poster-1.webp" alt="Depilacja laserowa nóg" width="360" height="640" loading="lazy" class="object-[50%_30%]"></div>
+      <h3 class="mt-3 font-medium">Całe ciało</h3>
+      <p class="text-steel">Pakiet depilacji · 2 h 30 min</p>
+      <p class="mt-1 font-medium">900 zł</p>
+    </a>
+  </div>
+</section>
+
+<!-- ============ GABINET: CZARNY PAS Z WIDEO ============ -->
+<section id="gabinet" class="on-dark bg-jet text-white">
+  <div class="max-w-[1440px] mx-auto grid md:grid-cols-2 items-center">
+    <div class="shot aspect-square bg-jet">
+      <video id="hero-video" src="videos/salon-lustro.mp4" poster="images/poster-lustro.webp" muted loop playsinline autoplay preload="metadata" aria-label="Nagranie gabinetu przy ul. 3 Maja 9"></video>
+    </div>
+    <div class="px-5 md:px-12 lg:px-20 py-16 md:py-0">
+      <h2 class="shout shout-lg reveal">Jedno łóżko.<br>Cała uwaga<br>dla Ciebie.</h2>
+      <p class="mt-6 text-lg text-white/75 max-w-md reveal">Jasny, kameralny gabinet przy ul. 3 Maja 9, w Salonie Madmuasell. Każdą wizytę zaczynam od rozmowy i oceny skóry.</p>
+      <div class="mt-8 flex flex-wrap gap-3 reveal">
+        <a href="https://booksy.com/pl-pl/201522_kosmetolog-laser-szczecin_salon-kosmetyczny_18078_szczecin" target="_blank" rel="noopener" class="pill pill-light">Umów wizytę</a>
+        <a href="#kontakt" class="pill pill-line-light">Jak dojechać</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EFEKTY ============ -->
+<section id="efekty" class="max-w-[1440px] mx-auto px-5 md:px-12 py-20 md:py-28">
+  <div class="text-center mb-12 reveal">
+    <h2 class="shout shout-lg">Efekty mówią same</h2>
+    <p class="mt-4 text-steel">Zdjęcia przed i po zabiegach. Kliknij, aby powiększyć.</p>
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 reveal">
+    <button type="button" class="tile tile-fill aspect-[3/4] !m-0" data-lb data-group="efekty" data-src="images/10.webp" data-caption="Oczyszczanie twarzy, przed i po" aria-label="Powiększ: Oczyszczanie twarzy, przed i po">
+      <img src="images/10.webp" alt="Skóra przed oczyszczaniem i po nim" width="1254" height="1254" loading="lazy">
+    </button>
+    <button type="button" class="tile tile-fill aspect-[3/4] !m-0" data-lb data-group="efekty" data-src="images/15.webp" data-caption="Skóra z zaskórnikami, przed i po" aria-label="Powiększ: Skóra z zaskórnikami, przed i po">
+      <img src="images/15.webp" alt="Zaskórniki zamknięte przed i po" width="1093" height="1800" loading="lazy">
+    </button>
+    <button type="button" class="tile tile-fill aspect-[3/4] !m-0" data-lb data-group="efekty" data-src="images/12.webp" data-caption="Skóra z bliznami potrądzikowymi, przed i po" aria-label="Powiększ: Skóra z bliznami potrądzikowymi, przed i po">
+      <img src="images/12.webp" alt="Blizny potrądzikowe przed i po" width="640" height="1022" loading="lazy">
+    </button>
+    <button type="button" class="tile tile-fill aspect-[3/4] !m-0" data-lb data-group="efekty" data-src="images/11.webp" data-caption="Wyrównanie kolorytu i przebarwień, przed i po" aria-label="Powiększ: Wyrównanie kolorytu, przed i po">
+      <img src="images/11.webp" alt="Przebarwienia przed i po" width="939" height="1676" loading="lazy">
+    </button>
+  </div>
+</section>
+
+<!-- ============ OPINIE ============ -->
+<section id="opinie" class="bg-smoke">
+  <div class="max-w-[1440px] mx-auto px-5 md:px-12 py-20 md:py-28 grid lg:grid-cols-12 gap-12">
+    <div class="lg:col-span-5 reveal">
+      <p class="shout text-[7rem] md:text-[10rem] leading-none">5,0</p>
+      <p class="mt-4 text-lg font-medium">17 opinii w Google · 39 opinii w Booksy</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="https://www.google.com/maps/search/?api=1&query=Kosmetolog_Laser+Szczecin+3+Maja+9" target="_blank" rel="noopener" class="pill pill-line">Google</a>
+        <a href="https://booksy.com/pl-pl/201522_kosmetolog-laser-szczecin_salon-kosmetyczny_18078_szczecin" target="_blank" rel="noopener" class="pill pill-line">Booksy</a>
+      </div>
+    </div>
+    <div class="lg:col-span-7 divide-y divide-ash reveal">
+      <figure class="pb-8">
+        <blockquote class="shout shout-md">„Przyjazna i spokojna atmosfera, podczas zabiegu czułam się bardzo komfortowo.”</blockquote>
+        <figcaption class="mt-3 text-steel">Aleksandra · Depilacja laserowa</figcaption>
+      </figure>
+      <figure class="py-8">
+        <blockquote class="shout shout-md">„Zabieg bezbolesny, jak i spektakularny efekt.”</blockquote>
+        <figcaption class="mt-3 text-steel">Darek · Depilacja laserowa pleców</figcaption>
+      </figure>
+      <figure class="pt-8">
+        <blockquote class="shout shout-md">„Efekt był widoczny od razu, skóra stała się czysta i świeża.”</blockquote>
+        <figcaption class="mt-3 text-steel">Elżbieta P. · Oczyszczanie twarzy</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIA ============ -->
+<section id="galeria" class="max-w-[1440px] mx-auto px-5 md:px-12 py-20 md:py-28">
+  <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 reveal">
+    <h2 class="shout shout-lg">Galeria</h2>
+    <div class="jump-nav flex gap-2 overflow-x-auto -mx-5 px-5 lg:mx-0 lg:px-0 pb-1" role="group" aria-label="Filtruj galerię">
+      <button type="button" class="chip" data-filter="all" aria-pressed="true">Wszystko</button>
+      <button type="button" class="chip" data-filter="gabinet" aria-pressed="false">Gabinet</button>
+      <button type="button" class="chip" data-filter="zabiegi" aria-pressed="false">Zabiegi</button>
+      <button type="button" class="chip" data-filter="efekty" aria-pressed="false">Przed i po</button>
+      <button type="button" class="chip" data-filter="wideo" aria-pressed="false">Nagrania</button>
+    </div>
+  </div>
+  <div class="masonry">
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="gabinet" data-src="images/2.webp" data-caption="Gabinet w porannym słońcu" aria-label="Powiększ: Gabinet w porannym słońcu"><img src="images/2.webp" alt="Gabinet w porannym słońcu" width="719" height="1279" loading="lazy"></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="zabiegi" data-src="images/3.webp" data-caption="Depilacja laserowa rąk" aria-label="Powiększ: Depilacja laserowa rąk"><img src="images/3.webp" alt="Depilacja laserowa ręki" width="921" height="921" loading="lazy"></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="efekty" data-src="images/10.webp" data-caption="Oczyszczanie twarzy, przed i po" aria-label="Powiększ: Oczyszczanie twarzy, przed i po"><img src="images/10.webp" alt="Skóra przed oczyszczaniem i po nim" width="1254" height="1254" loading="lazy"><span class="tile-badge">Przed i po</span></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="wideo gabinet" data-type="video" data-src="videos/salon.mp4" data-poster="images/poster-salon.webp" data-caption="Gabinet przy ul. 3 Maja 9, nagranie" aria-label="Odtwórz nagranie: Gabinet"><img src="images/poster-salon.webp" alt="" width="360" height="640" loading="lazy"><span class="tile-play"><i data-lucide="play" class="w-5 h-5 ml-0.5"></i></span><span class="tile-badge"><i data-lucide="video" class="w-3.5 h-3.5"></i>0:30</span></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="zabiegi" data-src="images/9.webp" data-caption="Maska alginatowa na twarz, szyję i dekolt" aria-label="Powiększ: Maska alginatowa"><img src="images/9.webp" alt="Maska alginatowa na twarzy" width="1013" height="1800" loading="lazy"></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="zabiegi" data-src="images/14.webp" data-caption="Depilacja laserowa twarzy" aria-label="Powiększ: Depilacja laserowa twarzy"><img src="images/14.webp" alt="Depilacja laserowa twarzy" width="1193" height="1800" loading="lazy"></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="efekty" data-src="images/13.webp" data-caption="Skóra przed zabiegiem i tuż po nim" aria-label="Powiększ: Skóra przed i po"><img src="images/13.webp" alt="Skóra przed zabiegiem i tuż po nim" width="1800" height="1800" loading="lazy"><span class="tile-badge">Przed i po</span></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="gabinet" data-src="images/8.webp" data-caption="Gabinet przy ul. 3 Maja 9" aria-label="Powiększ: Gabinet"><img src="images/8.webp" alt="Widok na gabinet" width="720" height="720" loading="lazy"></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="zabiegi" data-src="images/5.webp" data-caption="Zabieg aparaturowy twarzy" aria-label="Powiększ: Zabieg aparaturowy twarzy"><img src="images/5.webp" alt="Zabieg aparaturowy twarzy" width="839" height="839" loading="lazy"></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="efekty" data-src="images/12.webp" data-caption="Skóra z bliznami potrądzikowymi, przed i po" aria-label="Powiększ: Blizny przed i po"><img src="images/12.webp" alt="Blizny potrądzikowe przed i po" width="640" height="1022" loading="lazy"><span class="tile-badge">Przed i po</span></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="wideo zabiegi" data-type="video" data-src="videos/1.mp4" data-poster="images/poster-1.webp" data-caption="Depilacja laserowa nóg, nagranie" aria-label="Odtwórz nagranie: Depilacja laserowa nóg"><img src="images/poster-1.webp" alt="" width="360" height="640" loading="lazy"><span class="tile-play"><i data-lucide="play" class="w-5 h-5 ml-0.5"></i></span><span class="tile-badge"><i data-lucide="video" class="w-3.5 h-3.5"></i>0:37</span></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="zabiegi" data-src="images/6.webp" data-caption="Głowica lasera do depilacji" aria-label="Powiększ: Głowica lasera"><img src="images/6.webp" alt="Głowica lasera" width="845" height="845" loading="lazy"></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="efekty" data-src="images/11.webp" data-caption="Wyrównanie kolorytu i przebarwień, przed i po" aria-label="Powiększ: Przebarwienia przed i po"><img src="images/11.webp" alt="Przebarwienia przed i po" width="939" height="1676" loading="lazy"><span class="tile-badge">Przed i po</span></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="gabinet" data-src="images/1.webp" data-caption="Stanowisko zabiegowe przy oknie" aria-label="Powiększ: Stanowisko zabiegowe"><img src="images/1.webp" alt="Łóżko zabiegowe przy oknie" width="589" height="1055" loading="lazy"></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="zabiegi" data-src="images/7.webp" data-caption="Zabieg aparaturowy twarzy" aria-label="Powiększ: Zabieg aparaturowy"><img src="images/7.webp" alt="Głowica aparatu na czole" width="855" height="855" loading="lazy"></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="efekty" data-src="images/15.webp" data-caption="Skóra z zaskórnikami, przed i po" aria-label="Powiększ: Zaskórniki przed i po"><img src="images/15.webp" alt="Zaskórniki przed i po" width="1093" height="1800" loading="lazy"><span class="tile-badge">Przed i po</span></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="wideo zabiegi" data-type="video" data-src="videos/2.mp4" data-poster="images/poster-2.webp" data-caption="Mezoterapia mikroigłowa dermapenem, nagranie" aria-label="Odtwórz nagranie: Mezoterapia"><img src="images/poster-2.webp" alt="" width="360" height="640" loading="lazy"><span class="tile-play"><i data-lucide="play" class="w-5 h-5 ml-0.5"></i></span><span class="tile-badge"><i data-lucide="video" class="w-3.5 h-3.5"></i>0:25</span></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="zabiegi" data-src="images/16.webp" data-caption="Depilacja laserowa pach" aria-label="Powiększ: Depilacja pach"><img src="images/16.webp" alt="Depilacja laserowa pachy" width="921" height="1800" loading="lazy"></button>
+    <button type="button" class="tile" data-lb data-group="galeria" data-cat="zabiegi" data-src="images/4.webp" data-caption="Aplikacja preparatu na skórę twarzy" aria-label="Powiększ: Aplikacja preparatu"><img src="images/4.webp" alt="Nakładanie preparatu pędzelkiem" width="849" height="849" loading="lazy"></button>
+  </div>
+</section>
+
+<!-- ============ KONTAKT ============ -->
+<section id="kontakt" class="on-dark bg-jet text-white">
+  <div class="max-w-[1440px] mx-auto px-5 md:px-12 py-20 md:py-28 grid lg:grid-cols-12 gap-12">
+    <div class="lg:col-span-6 reveal">
+      <h2 class="shout shout-xl">Umów<br>wizytę</h2>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="https://booksy.com/pl-pl/201522_kosmetolog-laser-szczecin_salon-kosmetyczny_18078_szczecin" target="_blank" rel="noopener" class="pill pill-light">Rezerwuj w Booksy</a>
+        <a href="tel:+48787017566" class="pill pill-line-light"><i data-lucide="phone" class="w-4 h-4"></i>787 017 566</a>
+      </div>
+      <dl class="mt-12 grid sm:grid-cols-2 gap-8">
+        <div>
+          <dt class="font-medium">Adres</dt>
+          <dd class="mt-1 text-white/70">ul. 3 Maja 9<br>70-214 Szczecin<br>Salon Madmuasell</dd>
+          <dd class="mt-3"><a href="https://www.google.com/maps/dir/?api=1&destination=3+Maja+9,+70-214+Szczecin" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-white/70">Wyznacz trasę</a></dd>
+        </div>
+        <div>
+          <dt class="font-medium">Godziny</dt>
+          <dd class="mt-1 text-white/70 tabular">Pon.-pt. 10:00-20:00<br>Sobota 10:00-15:30<br>Niedziela nieczynne</dd>
+        </div>
+      </dl>
+    </div>
+    <div class="lg:col-span-6 reveal">
+      <div class="h-[360px] lg:h-full lg:min-h-[480px] bg-[#222]">
+        <iframe class="w-full h-full" style="filter: grayscale(1) contrast(1.05)" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa dojazdu, ul. 3 Maja 9 w Szczecinie" src="https://www.google.com/maps?q=3+Maja+9,+70-214+Szczecin&z=16&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ STOPKA ============ -->
+<footer class="on-dark bg-jet text-white/60 text-sm pb-28 sm:pb-10">
+  <div class="max-w-[1440px] mx-auto px-5 md:px-12 border-t border-white/15 pt-8 flex flex-col md:flex-row md:justify-between gap-6">
+    <div>
+      <p class="text-white font-medium">Kosmetolog/Laser Szczecin</p>
+      <p class="mt-1">© 2026 · ul. 3 Maja 9, Szczecin</p>
+    </div>
+    <nav class="flex flex-wrap gap-x-6 gap-y-2" aria-label="Stopka">
+      <a href="uslugi.html" class="hover:text-white">Zabiegi i cennik</a>
+      <a href="#efekty" class="hover:text-white">Efekty</a>
+      <a href="#galeria" class="hover:text-white">Galeria</a>
+      <a href="https://booksy.com/pl-pl/201522_kosmetolog-laser-szczecin_salon-kosmetyczny_18078_szczecin" target="_blank" rel="noopener" class="hover:text-white">Booksy</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- ============ PASEK MOBILNY ============ -->
+<div id="mobile-cta" class="mobile-cta fixed inset-x-3 bottom-3 z-40 sm:hidden flex gap-2 p-2 rounded-full bg-jet">
+  <a href="https://booksy.com/pl-pl/201522_kosmetolog-laser-szczecin_salon-kosmetyczny_18078_szczecin" target="_blank" rel="noopener" class="pill pill-light flex-1 !py-3">Umów wizytę</a>
+  <a href="tel:+48787017566" class="pill pill-line-light !p-0 w-12 h-12" aria-label="Zadzwoń: 787 017 566"><i data-lucide="phone" class="w-5 h-5"></i></a>
+</div>
+
+<!-- ============ LIGHTBOX ============ -->
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia lub nagrania" hidden>
+  <button type="button" class="lb-btn lb-close" aria-label="Zamknij podgląd"><i data-lucide="x" class="w-5 h-5"></i></button>
+  <button type="button" class="lb-btn lb-prev" aria-label="Poprzednie"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+  <button type="button" class="lb-btn lb-next" aria-label="Następne"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+  <div class="lb-stage"></div>
+  <p class="lb-caption"></p>
+</div>
+
+<script src="main.js"></script>
+<script>
+  // Rząd kart: strzałki przewijają o szerokość widocznej części
+  (function () {
+    const rail = document.getElementById('rail');
+    const prev = document.querySelector('[data-rail="prev"]');
+    const next = document.querySelector('[data-rail="next"]');
+    const update = () => {
+      prev.disabled = rail.scrollLeft < 8;
+      next.disabled = rail.scrollLeft + rail.clientWidth > rail.scrollWidth - 8;
+    };
+    prev.addEventListener('click', () => rail.scrollBy({ left: -rail.clientWidth * 0.9, behavior: 'smooth' }));
+    next.addEventListener('click', () => rail.scrollBy({ left: rail.clientWidth * 0.9, behavior: 'smooth' }));
+    rail.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>
+</body>
+</html>
